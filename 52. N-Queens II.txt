@@ -1,0 +1,57 @@
+52. N-Queens II
+Solved
+Hard
+Topics
+premium lock icon
+Companies
+The n-queens puzzle is the problem of placing n queens on an n x n chessboard such that no two queens attack each other.
+
+Given an integer n, return the number of distinct solutions to the n-queens puzzle.
+
+ 
+
+Example 1:
+
+
+Input: n = 4
+Output: 2
+Explanation: There are two distinct solutions to the 4-queens puzzle as shown.
+Example 2:
+
+Input: n = 1
+Output: 1
+
+class Solution {
+    private int count = 0;
+
+    public int totalNQueens(int n) {
+        boolean[] cols = new boolean[n];
+        boolean[] posDiag = new boolean[2 * n]; // r + c
+        boolean[] negDiag = new boolean[2 * n]; // r - c (offset by n)
+        
+        backtrack(0, n, cols, posDiag, negDiag);
+        return count;
+    }
+
+    private void backtrack(int r, int n, boolean[] cols, boolean[] posDiag, boolean[] negDiag) {
+        if (r == n) {
+            count++;
+            return;
+        }
+
+        for (int c = 0; c < n; c++) {
+            // Using boolean arrays is faster than HashSet for O(1) lookups
+            if (cols[c] || posDiag[r + c] || negDiag[r - c + n]) {
+                continue;
+            }
+
+            // Place Queen
+            cols[c] = posDiag[r + c] = negDiag[r - c + n] = true;
+            
+            backtrack(r + 1, n, cols, posDiag, negDiag);
+            
+            // Backtrack
+            cols[c] = posDiag[r + c] = negDiag[r - c + n] = false;
+        }
+    }
+}

@@ -1,0 +1,70 @@
+54. Spiral Matrix
+Solved
+Medium
+Topics
+premium lock icon
+Companies
+Hint
+Given an m x n matrix, return all elements of the matrix in spiral order.
+
+ 
+
+Example 1:
+
+
+Input: matrix = [[1,2,3],[4,5,6],[7,8,9]]
+Output: [1,2,3,6,9,8,7,4,5]
+Example 2:
+
+
+Input: matrix = [[1,2,3,4],[5,6,7,8],[9,10,11,12]]
+Output: [1,2,3,4,8,12,11,10,9,5,6,7]
+ 
+
+
+import java.util.*;
+
+class Solution {
+    public List<Integer> spiralOrder(int[][] matrix) {
+        List<Integer> res = new ArrayList<>();
+        if (matrix == null || matrix.length == 0) return res;
+
+        int top = 0;
+        int bottom = matrix.length - 1;
+        int left = 0;
+        int right = matrix[0].length - 1;
+
+        while (top <= bottom && left <= right) {
+            // 1. Move Right: across the top row
+            for (int i = left; i <= right; i++) {
+                res.add(matrix[top][i]);
+            }
+            top++; // Row finished
+
+            // 2. Move Down: along the right column
+            for (int i = top; i <= bottom; i++) {
+                res.add(matrix[i][right]);
+            }
+            right--; // Column finished
+
+            // 3. Move Left: across the bottom row
+            // Check if top <= bottom because we incremented top earlier
+            if (top <= bottom) {
+                for (int i = right; i >= left; i--) {
+                    res.add(matrix[bottom][i]);
+                }
+                bottom--; // Row finished
+            }
+
+            // 4. Move Up: along the left column
+            // Check if left <= right because we decremented right earlier
+            if (left <= right) {
+                for (int i = bottom; i >= top; i--) {
+                    res.add(matrix[i][left]);
+                }
+                left++; // Column finished
+            }
+        }
+        return res;
+    }
+}

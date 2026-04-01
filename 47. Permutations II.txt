@@ -1,0 +1,55 @@
+47. Permutations II
+Solved
+Medium
+Topics
+premium lock icon
+Companies
+Given a collection of numbers, nums, that might contain duplicates, return all possible unique permutations in any order.
+
+ 
+
+Example 1:
+
+Input: nums = [1,1,2]
+Output:
+[[1,1,2],
+ [1,2,1],
+ [2,1,1]]
+Example 2:
+
+Input: nums = [1,2,3]
+Output: [[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
+
+class Solution {
+    public List<List<Integer>> permuteUnique(int[] nums) {
+        List<List<Integer>> res = new ArrayList<>();
+        Arrays.sort(nums); // Critical for skipping duplicates
+        backtrack(res, new ArrayList<>(), nums, new boolean[nums.length]);
+        return res;
+    }
+
+    private void backtrack(List<List<Integer>> res, List<Integer> tempList, int[] nums, boolean[] used) {
+        if (tempList.size() == nums.length) {
+            res.add(new ArrayList<>(tempList));
+            return;
+        }
+
+        for (int i = 0; i < nums.length; i++) {
+            // Skip if already used in this path
+            if (used[i]) continue;
+            
+            // Skip duplicate: if current is same as previous AND previous hasn't been used
+            // This ensures we only pick the first available duplicate to start a sequence
+            if (i > 0 && nums[i] == nums[i-1] && !used[i-1]) continue;
+
+            used[i] = true;
+            tempList.add(nums[i]);
+            
+            backtrack(res, tempList, nums, used);
+            
+            // Backtrack
+            used[i] = false;
+            tempList.remove(tempList.size() - 1);
+        }
+    }
+}

@@ -1,0 +1,54 @@
+50. Pow(x, n)
+Solved
+Medium
+Topics
+premium lock icon
+Companies
+Implement pow(x, n), which calculates x raised to the power n (i.e., xn).
+
+ 
+
+Example 1:
+
+Input: x = 2.00000, n = 10
+Output: 1024.00000
+Example 2:
+
+Input: x = 2.10000, n = 3
+Output: 9.26100
+Example 3:
+
+Input: x = 2.00000, n = -2
+Output: 0.25000
+Explanation: 2-2 = 1/22 = 1/4 = 0.25
+ 
+
+class Solution {
+    public double myPow(double x, int n) {
+        // Use a long to avoid overflow when n = Integer.MIN_VALUE
+        long N = n;
+        
+        // Handle negative power: x^-n = (1/x)^n
+        if (N < 0) {
+            x = 1 / x;
+            N = -N;
+        }
+        
+        return fastPow(x, N);
+    }
+
+    private double fastPow(double x, long n) {
+        if (n == 0) return 1.0;
+        
+        // Recursively compute x^(n/2)
+        double half = fastPow(x, n / 2);
+        
+        if (n % 2 == 0) {
+            // If n is even: x^n = (x^(n/2))^2
+            return half * half;
+        } else {
+            // If n is odd: x^n = (x^(n/2))^2 * x
+            return half * half * x;
+        }
+    }
+}
