@@ -1,0 +1,66 @@
+61. Rotate List
+Solved
+Medium
+Topics
+premium lock icon
+Companies
+Given the head of a linked list, rotate the list to the right by k places.
+
+ 
+
+Example 1:
+
+
+Input: head = [1,2,3,4,5], k = 2
+Output: [4,5,1,2,3]
+Example 2:
+
+
+Input: head = [0,1,2], k = 4
+Output: [2,0,1]
+ 
+
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode rotateRight(ListNode head, int k) {
+        // Edge case: empty list, single node, or no rotation
+        if (head == null || head.next == null || k == 0) return head;
+
+        // 1. Compute length and find the actual tail
+        ListNode tail = head;
+        int n = 1;
+        while (tail.next != null) {
+            tail = tail.next;
+            n++;
+        }
+
+        // 2. Connect tail to head to form a circle
+        tail.next = head;
+
+        // 3. Find the new break point
+        // Rotation by k is equivalent to moving (n - k % n) steps
+        k = k % n;
+        int stepsToNewTail = n - k;
+        ListNode newTail = tail; 
+        
+        while (stepsToNewTail-- > 0) {
+            newTail = newTail.next;
+        }
+
+        // 4. Break the circle and set new head
+        ListNode newHead = newTail.next;
+        newTail.next = null;
+
+        return newHead;
+    }
+}
